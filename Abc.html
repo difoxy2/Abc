@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<body bgcolor="grey">
+
+
+<textarea id="myTextarea" rows="10" cols="100" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+<br>
+<div id="buttons" style="display:inline-block;">
+
+<button type="button" onclick="myFunction()">Try it</button><br>
+<button onclick="copy()">Copy</button><br>
+<div id="myDIV2" style="font-weight: bold">myDIV2</div>
+</div><br>
+<textarea id="myTextarea2" rows="4" cols="30" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+
+
+    
+<script>
+    
+function myFunction() {
+    document.getElementById("myDIV2").innerHTML="";
+    document.getElementById("myTextarea2").value="";
+    interpret_table(document.getElementById("myTextarea").value);
+}
+   
+    
+function interpret_table( data ) {
+ //--------------------------------------------------------------\\       
+var uniqsubject = [];
+var uniqscores = [];
+    
+var uniqsubjectHKEAA = [];
+var uniqscoresHKEAA = [];
+    
+var fourC = [];
+var fourCHKEAA = [];    
+    
+var twoX = [];
+var twoXHKEAA = [];        
+    
+var sumOfAllScores = 0;
+var sumOfAllScoresHKEAA = 0;
+    
+var sumOfFourC =0;
+var sumOfFourCHKEAA =0;
+    
+var sumOfTwoX =0;
+var sumOfTwoXHKEAA =0;
+    
+var EnglishPF = "FailENG";
+    
+var table = data.split("\n");
+for (i in table) {table[i] = table[i].split("\t");}
+//--------------------------------------------------------------\\    
+
+    for (i in table) {
+                        if(table[i][2]=="--" || table[i][2]=="X"){table[i][2]=0;}
+                        if(table[i][3]=="--" || table[i][3]=="X"){table[i][3]=0;}
+                        if(table[i][2]=="5*"){table[i][2]=6;}
+                        if(table[i][3]=="5*"){table[i][3]=6;}
+                        if(table[i][2]=="5**"){table[i][2]=7;}
+                        if(table[i][3]=="5**"){table[i][3]=7;}
+    }
+    
+pushTabletoHKEAAandAppl(uniqsubject,uniqscores,2);
+pushTabletoHKEAAandAppl(uniqsubjectHKEAA,uniqscoresHKEAA,3);
+
+if(uniqscores[uniqsubject.indexOf("HKDSE English Language")] >2 && uniqscoresHKEAA[uniqsubjectHKEAA.indexOf("HKDSE English Language")]>2){EnglishPF = "PassENG";}
+
+uniqscoresTo4C2X(uniqsubject,uniqscores,fourC,twoX);
+sumOfFourC = sumInArraywithMaxIndex(fourC,4);
+sumOfTwoX = sumInArraywithMaxIndex(twoX,2);console.log(fourC +":"+sumOfFourC +"/"+twoX+":"+sumOfTwoX);    
+    
+uniqscoresTo4C2X(uniqsubjectHKEAA,uniqscoresHKEAA,fourCHKEAA,twoXHKEAA);
+sumOfFourCHKEAA = sumInArraywithMaxIndex(fourCHKEAA,4);
+sumOfTwoXHKEAA = sumInArraywithMaxIndex(twoXHKEAA,2);console.log(fourCHKEAA +":"+sumOfFourCHKEAA +"/"+twoXHKEAA+":"+sumOfTwoXHKEAA);        
+    
+sumOfAllScores = sumInArraywithMaxIndex(uniqscores,uniqscores.length);console.log(sumOfAllScores);
+sumOfAllScoresHKEAA = sumInArraywithMaxIndex(uniqscoresHKEAA,uniqscoresHKEAA.length);console.log(sumOfAllScoresHKEAA);
+
+var FourC2X = sumOfFourC +  sumOfTwoX;
+var FourC2XHKEAA = sumOfFourCHKEAA + sumOfTwoXHKEAA;
+document.getElementById("myTextarea2").value = FourC2X +" "+  FourC2XHKEAA + " " +  sumOfAllScores + " " +   sumOfAllScoresHKEAA + " " + EnglishPF;
+copy();
+    
+    
+function uniqscoresTo4C2X (subjects, scores, Four, Two){
+    for (i in subjects){
+        switch(subjects[i]) {
+      case "HKDSE Chinese Language": Four.push(scores[i]); break;
+      case "HKDSE English Language": Four.push(scores[i]); break;
+      case "HKDSE Mathematics Compulsory Part": Four.push(scores[i]); break;
+      case "HKDSE Liberal Studies": Four.push(scores[i]); break;         
+      default: Two.push(scores[i]);
+        }   
+    }      
+}
+
+ 
+    
+function sumInArraywithMaxIndex(arry, max){
+    var temp=0;
+    var tempArray = arry;
+    tempArray.sort();
+    tempArray.reverse();
+    for (var i=0; i<max; i++){
+        temp += tempArray[i];
+    }
+    return temp;
+}    
+    
+function pushTabletoHKEAAandAppl(a, b , c){
+      for (i in table){
+            var abc = table[i][1];
+            if(a.indexOf(abc)<0){
+                a.push(table[i][1]);b.push(+table[i][c]);
+            }else if(+table[i][c]>b[a.indexOf(table[i][1])]){
+                b[a.indexOf(table[i][1])] = +table[i][c];
+            }
+        }
+        console.log(a);console.log(b);console.log(table);
+    }//table to subject list of applinfo and HKEAA
+
+} 
+
+   
+function copy() {
+  var copyText = document.getElementById("myTextarea2");
+  copyText.select();
+  document.execCommand("copy");
+}   //copy textarea2 to clipboard function
+
+function emptyarry(arry){
+        do {
+    arry.shift();
+}
+    while(arry.length > 0);
+    }
+
+    
+</script>    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>
+

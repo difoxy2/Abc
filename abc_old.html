@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<textarea id="myTextarea" rows="10" cols="100" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+<br>
+<div id="buttons" style="display:inline-block;">
+
+<button type="button" onclick="myFunction()">Try it</button><br>
+<button onclick="copy()">Copy</button><br>
+<div id="myDIV2" style="font-weight: bold">myDIV2</div>
+</div><br>
+<textarea id="myTextarea2" rows="4" cols="4" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+
+
+    
+<script>
+    
+function myFunction() {
+    document.getElementById("myDIV2").innerHTML="";
+    document.getElementById("myTextarea2").value="";
+    interpret_table(document.getElementById("myTextarea").value);
+}
+
+function interpret_table( data ) {
+  
+    var table = data.split("\n");
+    var ElectiveList = [];
+    var CoreList = [];
+    var electivemax2 = 0;
+    var core4ele2 = 0;
+    
+    for (i in table) {
+        table[i] = table[i].split("\t");
+        
+        if(table[i][1] == "HKDSE Chinese Language" || table[i][1] == "HKDSE English Language" || table[i][1] == "HKDSE Mathematics Compulsory Part" || table[i][1] == "HKDSE Liberal Studies"){CoreList.push(table[i][1])}else{ElectiveList.push(table[i][1]);}
+        
+        
+    }
+    var uniqelCoreList = [...new Set(CoreList)];
+    var uniqelElectiveList = [...new Set(ElectiveList)];
+    var corescore = 0;
+    var electivescore = [];
+
+    console.log(table);console.log(uniqelCoreList);console.log(uniqelElectiveList);
+    
+    for (i in uniqelCoreList){
+        corescore += +searchMarks(table, uniqelCoreList[i]);
+    }
+    document.getElementById("myDIV2").innerHTML += corescore + "<br>";
+    document.getElementById("myDIV2").innerHTML += "<font color='blue'><b>Core subject count: " + uniqelCoreList.length +"</font><br><br>"
+    
+      for (i in uniqelElectiveList){
+        electivescore.push(+searchMarks(table, uniqelElectiveList[i]));
+    }
+    electivescore.sort();
+    console.log(electivescore);
+    electivemax2 = electivescore[electivescore.length-1]+electivescore[electivescore.length-2];
+    document.getElementById("myDIV2").innerHTML += electivemax2 + "<br>";
+    document.getElementById("myDIV2").innerHTML += "<font color='blue'><b>Elective subject count: " + uniqelElectiveList.length +"</font><br><br>"
+    
+    
+    core4ele2 = electivemax2 + corescore;
+    document.getElementById("myTextarea2").value = core4ele2;
+    copy();
+}   
+    
+function searchMarks( data, subject ) {
+    var temp = 0;
+    for(var i=0; i<data.length; i++){
+        
+        if(data[i][3] == "5*"){data[i][3]=6;}
+        if(data[i][3] == "5**"){data[i][3]=7;}
+        if(data[i][3] == "X"){data[i][3]=0;}
+        
+        if(data[i][1] == subject && data[i][3]>temp){
+            temp = data[i][3];
+        }
+
+    }
+    document.getElementById("myDIV2").innerHTML += subject + temp + "<br>";
+    if(subject == "HKDSE English Language" && temp<3){document.getElementById("myDIV2").innerHTML += "<font color='red' size='15'><b>!!!Fail English!!!</b></font><br>";}
+    return temp;
+}
+    
+//copy to textarea1 function
+function copy() {
+  var copyText = document.getElementById("myTextarea2");
+  copyText.select();
+  document.execCommand("copy");
+}
+    
+
+    
+</script>    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>
+
