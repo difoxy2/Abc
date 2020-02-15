@@ -1,7 +1,7 @@
-1. 4C + 2X (based on student's input)
+1. 4C + 2X (based on user's input)
 2. 4C + 2X (based on EAA's data) 
-3. Sum of all avaliable best scores (based on student's input)
-4.Sum of all avaliable best scores (based on EAA's data)
-5. English: Eng>=3? (Student or EAA < 3 => Fail)
+3. Sum of all avaliable best scores (based on user's input)
+4. Sum of all avaliable best scores (based on EAA's data)
+5. English: Eng>=3? (user or EAA < 3 => Fail)
 
 Abc_old = (2.) only, but different method
