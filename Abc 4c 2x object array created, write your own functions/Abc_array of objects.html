@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<body bgcolor="grey">
+
+
+<textarea oninput="yourFunction()" id="myTextarea" rows="10" cols="100" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+<br>
+<div id="buttons" style="display:inline-block;">
+
+<button type="button" onclick="myFunction()">Try it</button><br>
+<button onclick="copy()">Copy</button><br>
+<div id="myDIV2" style="font-weight: bold">myDIV2</div>
+</div><br>
+<textarea id="myTextarea2" rows="4" cols="30" style="font-size: 18px" wrap="hard" spellcheck="false"></textarea>
+
+
+
+    
+<script>
+//-----------Global/Static/Constant variables generated oninput of myTextarea (see 4c2xObjArry.js)-------------\\
+    
+var table = [];
+var uniqsubject = [];               /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+var uniqsubjectHKEAA = [];          /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+var core = [];                      /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+var coreHKEAA = [];                 /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+var elective = [];                  /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+var electiveHKEAA = [];             /* [{name: #1, grade: #1},{name: #2, grade: #2}] */
+    
+
+//---------------------------write your own functions below---------------------------------\\
+    
+
+function myFunction() {
+    var summofall = sumOfBestNsubj(uniqsubject, uniqsubject.length);
+    var summofallHKEAA = sumOfBestNsubj(uniqsubjectHKEAA, uniqsubjectHKEAA.length);
+    var FourC2X = sumOfBestNsubj(core, core.length) + sumOfBestNsubj(elective, 2);
+    var FourC2XHKEAA = sumOfBestNsubj(coreHKEAA, coreHKEAA.length) + sumOfBestNsubj(electiveHKEAA, 2);
+    var eng = "??";
+    for (i in uniqsubject){
+        if(uniqsubjectHKEAA[i]["name"]=="HKDSE English Language" && uniqsubjectHKEAA[i]["grade"]>2){eng="Pass English:D";break;}else{eng="Fail English!!";}
+    }
+    document.getElementById("myTextarea2").value = "sum\t" + summofall + "\tsumHKEAA\t" + summofallHKEAA + "\t4C2X\t" + FourC2X + "\t4C2XHKEAA\t" + FourC2XHKEAA + "\t" + eng;
+    copy();
+}
+ 
+    
+function sumOfBestNsubj(array, N){  //sum grades of best N subjects in given array
+    var temp=0;
+    var tempArray = array;
+    tempArray.sort(function(a, b){return b["grade"]-a["grade"]});
+    for (var i=0; i<N; i++){
+        temp += +tempArray[i]["grade"];
+        
+    }
+    return temp;
+}    
+    
+
+
+   
+function copy() {
+  var copyText = document.getElementById("myTextarea2");
+  copyText.select();
+  document.execCommand("copy");
+}   //copy textarea2 to clipboard function
+   
+</script> 
+    
+    
+    
+    
+    
+    
+<script src="4c2xObjArry.js"></script>
+ 
+</body>
+</html>
+
